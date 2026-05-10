@@ -1,4 +1,7 @@
 import os
+# This finds the exact folder your code is sitting in
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+DB_FILE = os.path.join(BASE_DIR, "hackers.json")
 from fastapi import FastAPI
 from pydantic import BaseModel
 from typing import List, Optional  # Add Optional here
