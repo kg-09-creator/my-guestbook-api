@@ -42,13 +42,12 @@ def get_stats():
 
 @app.get("/search/{name}")
 def search_hacker(name: str):
-    # This line has 4 spaces at the start
-    for p in profiles:
-        # This line has 8 spaces at the start
-        if p["name"].lower() == name.lower():
-            # This line has 12 spaces at the start
+    data = load_data()  # Make sure we are looking at the saved file!
+    for p in data:
+        # We check both ways just in case
+        hacker_name = p.get("name", "") if isinstance(p, dict) else getattr(p, "name", "")
+        if hacker_name.lower() == name.lower():
             return p
-    # This line goes back to 4 spaces
     return {"error": "Hacker not found"}
 
 @app.post("/join")
