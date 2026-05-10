@@ -40,12 +40,15 @@ def get_stats():
     """Shows how many hackers are in our directory."""
     return {"total_hackers": len(profiles), "server_time": time.time()}
 
-    @app.get("/search/{name}")
+@app.get("/search/{name}")
 def search_hacker(name: str):
-    """Find a specific hacker by their name."""
+    # This line has 4 spaces at the start
     for p in profiles:
+        # This line has 8 spaces at the start
         if p["name"].lower() == name.lower():
+            # This line has 12 spaces at the start
             return p
+    # This line goes back to 4 spaces
     return {"error": "Hacker not found"}
 
 @app.post("/join")
