@@ -29,6 +29,18 @@ def get_random():
         return {"message": "The directory is empty!"}
     return random.choice(profiles)
 
+@app.get("/vibe")
+def get_vibe():
+    """GET Endpoint 4: Checks the vibe of the directory"""
+    count = len(profiles)
+    if count == 0:
+        return {"vibe": "Quiet... maybe too quiet. Add someone!"}
+    elif count < 5:
+        # This will be your vibe since you have 3 profiles now!
+        return {"vibe": "Starting to buzz! The club is growing."}
+    else:
+        return {"vibe": "It's a party in here! We've got a full house."}
+
 @app.post("/join")
 def join(profile: Profile):
     """POST Endpoint: Join the club!"""
