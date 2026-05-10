@@ -50,15 +50,14 @@ def get_random():
 
 @app.get("/vibe")
 def get_vibe():
-    """GET Endpoint 4: Checks the vibe of the directory"""
+    """GET Endpoint: Tells you the 'vibe' of the directory"""
     count = len(profiles)
     if count == 0:
-        return {"vibe": "Quiet... maybe too quiet. Add someone!"}
+        return {"vibe": "Ghost town... be the first to join!"}
     elif count < 5:
-        # This will be your vibe since you have 3 profiles now!
-        return {"vibe": "Starting to buzz! The club is growing."}
+        return {"vibe": "Starting to buzz! A few hackers are here."}
     else:
-        return {"vibe": "It's a party in here! We've got a full house."}
+        return {"vibe": "It's a party! The directory is full of talent."}
 
 @app.get("/about")
 def about_me():
