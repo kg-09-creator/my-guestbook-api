@@ -54,13 +54,10 @@ def search_hacker(name: str):
     return {"error": "Hacker not found"}
 
 @app.post("/join")
-def join(profile: Profile):
-    current_data = load_data()
-    # Use .dict() or .model_dump() to turn the object into a simple dictionary
-    new_entry = profile.dict() 
-    current_data.append(new_entry)
-    save_data(current_data)
-    return {"message": f"Saved {profile.name} to the database!"}
-
-
-
+def create_profile(profile: Profile):
+    data = load_data()
+    # model_dump() is the modern way to turn your profile into data
+    new_entry = profile.model_dump() 
+    data.append(new_entry)
+    save_data(data)
+    return {"message": f"Successfully saved {profile.name}!"}
