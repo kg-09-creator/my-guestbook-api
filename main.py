@@ -48,12 +48,13 @@ def search_hacker(name: str):
     return {"error": "Hacker not found"}
 
 @app.post("/join")
-def create_profile(profile: Profile):
-    """Add your own profile to the directory!"""
-    # If they didn't send a time (which they shouldn't), we add it now
-    if profile.joined_at is None:
-        profile.joined_at = time.time()
+def join(profile: Profile):
+    current_data = load_data()
+    # Use .dict() or .model_dump() to turn the object into a simple dictionary
+    new_entry = profile.dict() 
+    current_data.append(new_entry)
+    save_data(current_data)
+    return {"message": f"Saved {profile.name} to the database!"}
 
-    profiles.append(profile)
-    return {"message": f"Welcome to the club, {profile.name}!"}
+
 
