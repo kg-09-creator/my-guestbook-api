@@ -44,9 +44,10 @@ def get_vibe():
 @app.get("/about")
 def about_me():
     return {
-        "developer": "Your Name/Username",
-        "project": "RaspAPI Member Directory",
-        "fun_fact": "I built this entire API in one sitting!"
+        "developer": "Your Name Here", 
+        "project_goal": "To earn my first Raspberry Pi", 
+        "favorite_part": "Adding new components like vibe and the search function!", 
+        "current_status": "Ready to submit!"
     }
 
 @app.post("/join")
