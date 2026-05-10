@@ -7,11 +7,20 @@ app = FastAPI(title="Hack Club Member Directory", description="An API to share h
 
 # This is a "Schema" - it defines what a Profile should look like
 class Profile(BaseModel):
-    name: str
-    skill: str
-    github_username: str
-    # Setting this to None tells the API "you don't have to send this"
-    joined_at: Optional[float] = None 
+    name: str = "New Hacker"
+    skill: str = "Learning"
+    github_username: str = "pending"
+    joined_at: Optional[float] = None
+    
+    class Config:
+        json_schema_extra = {
+            "example": {
+                "name": "Orpheus",
+                "skill": "Dinosaurs",
+                "github_username": "orpheus-codes"
+            }
+        }
+
 
 # Our "Database" (for now)
 profiles = []
@@ -30,6 +39,14 @@ def get_stats():
     """Shows how many hackers are in our directory."""
     return {"total_hackers": len(profiles), "server_time": time.time()}
 
+    @app.get("/search/{name}")
+def search_hacker(name: str):
+    """Find a specific hacker by their name."""
+    for p in profiles:
+        if p["name"].lower() == name.lower():
+            return p
+    return {"error": "Hacker not found"}
+
 @app.post("/join")
 def create_profile(profile: Profile):
     """Add your own profile to the directory!"""
@@ -39,3 +56,4 @@ def create_profile(profile: Profile):
 
     profiles.append(profile)
     return {"message": f"Welcome to the club, {profile.name}!"}
+
