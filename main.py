@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
-from typing import List
+from typing import List, Optional  # Add Optional here
 import time
 
 app = FastAPI(title="Hack Club Member Directory", description="An API to share hacker profiles!")
@@ -10,7 +10,8 @@ class Profile(BaseModel):
     name: str
     skill: str
     github_username: str
-    joined_at: float = time.time()
+    # Setting this to None tells the API "you don't have to send this"
+    joined_at: Optional[float] = None 
 
 # Our "Database" (for now)
 profiles = []
@@ -32,5 +33,9 @@ def get_stats():
 @app.post("/join")
 def create_profile(profile: Profile):
     """Add your own profile to the directory!"""
+    # If they didn't send a time (which they shouldn't), we add it now
+    if profile.joined_at is None:
+        profile.joined_at = time.time()
+
     profiles.append(profile)
     return {"message": f"Welcome to the club, {profile.name}!"}
