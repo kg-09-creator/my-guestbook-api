@@ -41,6 +41,14 @@ def get_vibe():
     else:
         return {"vibe": "It's a party in here! We've got a full house."}
 
+@app.get("/about")
+def about_me():
+    return {
+        "developer": "Your Name/Username",
+        "project": "RaspAPI Member Directory",
+        "fun_fact": "I built this entire API in one sitting!"
+    }
+
 @app.post("/join")
 def join(profile: Profile):
     """POST Endpoint: Join the club!"""
