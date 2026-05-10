@@ -16,11 +16,30 @@ class Profile(BaseModel):
 
 @app.get("/")
 def home():
-    return {"message": "API is Live! Visit /docs to join the club."}
+    return {
+        "title": "Welcome to My First API",
+        "status": "Running on Render",
+        "instructions": "Go to /docs to sign the guestbook and join the directory!"
+    }
+
+@app.post("/join")
+def join(profile: Profile):
+    """POST Endpoint: Join the club!"""
+    profiles.append(profile.dict())
+    return {"message": f"Welcome, {profile.name}!"}
 
 @app.get("/profiles")
 def get_all():
     return profiles
+
+@app.get("/search/{name}")
+def search_hacker(name: str):
+    """GET Endpoint: Finds a specific hacker by name"""
+    # 'p' is each individual profile in your list
+    for p in profiles:
+        if p["name"].lower() == name.lower():
+            return p
+    return {"error": "Hacker not found"}
 
 @app.get("/random-hacker")
 def get_random():
@@ -49,9 +68,3 @@ def about_me():
         "favorite_part": "Adding new components like vibe and the search function!", 
         "current_status": "Ready to submit!"
     }
-
-@app.post("/join")
-def join(profile: Profile):
-    """POST Endpoint: Join the club!"""
-    profiles.append(profile.dict())
-    return {"message": f"Welcome, {profile.name}!"}
