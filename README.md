@@ -1,6 +1,6 @@
 # my-guestbook-api
 # My Digital Guestbook API
-Hi, this is my project for Hack Club's RaspAPI! It's a simple guestbook where you can add a profile, view others' profiles, or search for a specific user.
+Hi, this is my project for Hack Club's RaspAPI! It's a simple guestbook where you can add a profile, view others' profiles, or search for a specific user. It works similar to Instagram and Discord in the sense that users create profiles that you and others can view.
 
 ## Live Link
 (https://kgs-guestbook-api.onrender.com)
