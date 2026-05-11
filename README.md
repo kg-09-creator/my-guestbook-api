@@ -13,3 +13,10 @@ Hi, this is my project for Hack Club's RaspAPI! It's a simple guestbook where yo
 - Visit `/profiles` to see others' profiles.
   - If you see [], it just means the directory is empty. Use the /join endpoint to add yourself!
 - Try the /vibe endpoint to see how the club is doing!
+
+## Process
+Built using Python and FastAPI, it is hosted on Render.
+
+## Some Issues I Faced and Troubleshooted
+- Error 500
+- Status 127
