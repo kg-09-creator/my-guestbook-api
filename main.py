@@ -22,6 +22,7 @@ class Profile(BaseModel):
     name: str
     skill: str
     github_username: str
+    passkey: str
 
 @app.get("/")
 def home():
@@ -33,9 +34,9 @@ def home():
 
 @app.post("/join")
 def join(profile: Profile):
-    """POST Endpoint: Join the club!"""
+    # Store the profile as usual
     profiles.append(profile.dict())
-    return {"message": f"Welcome, {profile.name}!"}
+    return {"message": f"Welcome, {profile.name}! Keep your passkey safe."}
 
 @app.get("/profiles")
 def get_all():
@@ -76,12 +77,18 @@ def about_me():
         "favorite_part": "Adding new components like vibe and the search function!", 
     }
 
-@app.delete("/delete/{name}")
-def delete_hacker(name: str):
-    """DELETE Endpoint: Removes a hacker from the list"""
+@app.delete("/delete/{name}/{passkey}")
+def delete_hacker(name: str, passkey: str):
     global profiles
-    # This keeps everyone EXCEPT the person you want to delete
-    new_profiles = [p for p in profiles if p["name"].lower() != name.lower()]
+    for p in profiles:
+        if p["name"].lower() == name.lower():
+            if p["passkey"] == passkey:
+                profiles = [h for h in profiles if h["name"].lower() != name.lower()]
+                return {"message": "Profile deleted successfully."}
+            else:
+                return {"error": "Invalid passkey for this user."}, 403
+    
+    return {"error": "User not found."}, 404
     
     if len(new_profiles) == len(profiles):
         return {"error": "Hacker not found"}
