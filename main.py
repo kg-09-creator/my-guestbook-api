@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from pydantic import BaseModel
 from typing import List, Optional
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi import HTTPException
 import random
 import time
 
@@ -75,15 +76,14 @@ def about_me():
         "favorite_part": "Adding new components like vibe and the search function!",
     }
 
-@app.delete("/delete/{name}/{passkey}")
-def delete_hacker(name: str, passkey: str):
+@app.delete("/delete/{name}/{user_key}")
+def delete_hacker(name: str, user_key: str):
     global profiles
     for p in profiles:
         if p["name"].lower() == name.lower():
-            if p["passkey"] == passkey:
+            if p["passkey"] == user_key:
                 profiles = [h for h in profiles if h["name"].lower() != name.lower()]
-                return {"message": f"Profile for {name} deleted successfully."}
-            else:
-                return {"error": "Invalid passkey for this user."}, 403
-    
-    return {"error": "User not found."}, 404
+                return {"message": "Deleted"}
+            # Raising an exception sends a 403 error code to the browser
+            raise HTTPException(status_code=403, detail="Wrong passkey")
+    raise HTTPException(status_code=404, detail="User not found")
