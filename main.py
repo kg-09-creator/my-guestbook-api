@@ -6,7 +6,6 @@ import time
 
 app = FastAPI(title="The Ultimate Hacker Directory")
 
-# A simple list that stays in memory (no more 500 errors!)
 profiles = []
 
 class Profile(BaseModel):
@@ -62,8 +61,7 @@ def get_vibe():
 @app.get("/about")
 def about_me():
     return {
-        "developer": "Your Name Here", 
+        "developer": "Kavya", 
         "project_goal": "To earn my first Raspberry Pi", 
         "favorite_part": "Adding new components like vibe and the search function!", 
-        "current_status": "Ready to submit!"
     }
