@@ -1,12 +1,11 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
 from typing import List, Optional
+from fastapi.middleware.cors import CORSMiddleware
 import random
 import time
 
 app = FastAPI(title="The Ultimate Hacker Directory")
-
-from fastapi.middleware.cors import CORSMiddleware
 
 app.add_middleware(
     CORSMiddleware,
@@ -16,13 +15,13 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-profiles = []
-
 class Profile(BaseModel):
     name: str
     skill: str
     github_username: str
-    passkey: str
+    passkey: str  
+
+profiles = []
 
 @app.get("/")
 def home():
@@ -34,7 +33,6 @@ def home():
 
 @app.post("/join")
 def join(profile: Profile):
-    # Store the profile as usual
     profiles.append(profile.dict())
     return {"message": f"Welcome, {profile.name}! Keep your passkey safe."}
 
@@ -42,10 +40,12 @@ def join(profile: Profile):
 def get_all():
     return profiles
 
+@app.get("/stats")
+def get_stats():
+    return {"total_hackers": len(profiles), "timestamp": time.time()}
+
 @app.get("/search/{name}")
 def search_hacker(name: str):
-    """GET Endpoint: Finds a specific hacker by name"""
-    # 'p' is each individual profile in your list
     for p in profiles:
         if p["name"].lower() == name.lower():
             return p
@@ -53,14 +53,12 @@ def search_hacker(name: str):
 
 @app.get("/random-hacker")
 def get_random():
-    """GET Endpoint 3: Picks a random person from the directory"""
     if not profiles:
         return {"message": "The directory is empty!"}
     return random.choice(profiles)
 
 @app.get("/vibe")
 def get_vibe():
-    """GET Endpoint: Tells you the 'vibe' of the directory"""
     count = len(profiles)
     if count == 0:
         return {"vibe": "Ghost town... be the first to join!"}
@@ -72,9 +70,9 @@ def get_vibe():
 @app.get("/about")
 def about_me():
     return {
-        "developer": "Kavya", 
-        "project_goal": "To earn my first Raspberry Pi", 
-        "favorite_part": "Adding new components like vibe and the search function!", 
+        "developer": "Kavya",
+        "project_goal": "To earn my first Raspberry Pi",
+        "favorite_part": "Adding new components like vibe and the search function!",
     }
 
 @app.delete("/delete/{name}/{passkey}")
@@ -84,14 +82,8 @@ def delete_hacker(name: str, passkey: str):
         if p["name"].lower() == name.lower():
             if p["passkey"] == passkey:
                 profiles = [h for h in profiles if h["name"].lower() != name.lower()]
-                return {"message": "Profile deleted successfully."}
+                return {"message": f"Profile for {name} deleted successfully."}
             else:
                 return {"error": "Invalid passkey for this user."}, 403
     
     return {"error": "User not found."}, 404
-    
-    if len(new_profiles) == len(profiles):
-        return {"error": "Hacker not found"}
-    
-    profiles = new_profiles
-    return {"message": f"User {name} has been purged from the system."}
