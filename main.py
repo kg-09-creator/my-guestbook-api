@@ -75,3 +75,16 @@ def about_me():
         "project_goal": "To earn my first Raspberry Pi", 
         "favorite_part": "Adding new components like vibe and the search function!", 
     }
+
+@app.delete("/delete/{name}")
+def delete_hacker(name: str):
+    """DELETE Endpoint: Removes a hacker from the list"""
+    global profiles
+    # This keeps everyone EXCEPT the person you want to delete
+    new_profiles = [p for p in profiles if p["name"].lower() != name.lower()]
+    
+    if len(new_profiles) == len(profiles):
+        return {"error": "Hacker not found"}
+    
+    profiles = new_profiles
+    return {"message": f"User {name} has been purged from the system."}
