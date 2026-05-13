@@ -79,11 +79,18 @@ def about_me():
 @app.delete("/delete/{name}/{user_key}")
 def delete_hacker(name: str, user_key: str):
     global profiles
+    
+    # YOUR SECRET MASTER KEY
+    MASTER_KEY = "KavyaAdmin99"
+    
     for p in profiles:
         if p["name"].lower() == name.lower():
-            if p["passkey"] == user_key:
+            # Check if the key they typed matches THEIR key OR your MASTER_KEY
+            if p["passkey"] == user_key or user_key == MASTER_KEY:
                 profiles = [h for h in profiles if h["name"].lower() != name.lower()]
-                return {"message": "Deleted"}
-            # Raising an exception sends a 403 error code to the browser
-            raise HTTPException(status_code=403, detail="Wrong passkey")
+                return {"message": "Success"}
+            
+            # If it matches neither, block them
+            raise HTTPException(status_code=403, detail="Invalid passkey")
+            
     raise HTTPException(status_code=404, detail="User not found")
